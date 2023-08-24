@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "lib": ["esnext", "DOM"],
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "target": "es2017",
+    "resolveJsonModule": true
+  },
+  "include": ["*.ts"]
+}
