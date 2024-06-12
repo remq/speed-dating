@@ -1,0 +1,18 @@
+.lobbyStep {
+  grid-template-columns: 2fr 1fr;
+
+  @include respond-to(phones) {
+    grid-template-columns: 1fr;
+  }
+
+  .userList {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: $sizeM;
+    margin-top: $sizeM;
+
+    @include respond-to(phones) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}

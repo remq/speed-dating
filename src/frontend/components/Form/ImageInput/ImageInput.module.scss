@@ -1,0 +1,33 @@
+.imageInput {
+  display: block;
+  width: $sizeXL;
+  height: $sizeXL;
+  margin: 0 auto $sizeM auto;
+  border: 2px dashed;
+  border-radius: $sizeXS;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &.hasPreview {
+    border: 2px solid;
+  }
+
+  .imageInputInput {
+    appearance: none;
+    display: none;
+  }
+
+  .imagePreview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cameraIcon {
+    width: $sizeL;
+    height: $sizeL;
+  }
+}

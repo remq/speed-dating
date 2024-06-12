@@ -1,0 +1,43 @@
+$phone-breakpoint: 320px;
+$tablet-breakpoint: 720px;
+$desktop-breakpoint: 960px;
+$wide-breakpoint: 1200px;
+
+$tablets-mq: "only screen and (min-width: #{$tablet-breakpoint + 1}) and (max-width: #{$desktop-breakpoint - 1})";
+$tablets-up-mq: "only screen and (min-width: #{$tablet-breakpoint + 1})";
+$desktops-mq: "only screen and (min-width: #{$desktop-breakpoint})";
+$wide-mq: "only screen and (min-width: #{$wide-breakpoint})";
+$phones-mq: "only screen and (max-width: #{$tablet-breakpoint})";
+$retina-mq: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx), (min-resolution: 192dpi)";
+
+@mixin respond-to($media) {
+  @if $media == phones {
+    @media #{$phones-mq} {
+      @content;
+    }
+  } @else if $media == portables {
+    @media #{$tablets-mq}, #{$phones-mq} {
+      @content;
+    }
+  } @else if $media == tablets {
+    @media #{$tablets-mq} {
+      @content;
+    }
+  } @else if $media == tablets-up {
+    @media #{$tablets-up-mq} {
+      @content;
+    }
+  } @else if $media == desktops {
+    @media #{$desktops-mq} {
+      @content;
+    }
+  } @else if $media == wide {
+    @media #{$wide-mq} {
+      @content;
+    }
+  } @else if $media == retina {
+    @media #{$retina-mq} {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.userCard {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+
+  .name {
+    display: block;
+    flex: 1;
+    margin: 0 $sizeS;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .image {
+    object-fit: cover;
+  }
+}

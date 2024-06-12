@@ -1,0 +1,17 @@
+.sessionControls {
+  position: fixed;
+  bottom: $sizeM;
+  right: $sizeM;
+  width: $sizeM;
+  height: $sizeM;
+  border-radius: 50%;
+  @include block3();
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: $sizeS;
+  }
+}

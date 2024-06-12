@@ -1,0 +1,83 @@
+@mixin block($textColor, $backgroundColor) {
+  color: $textColor;
+  background-color: $backgroundColor;
+  border-color: $textColor;
+
+  button {
+    color: $backgroundColor;
+    background-color: $textColor;
+  }
+
+  a {
+    color: $textColor;
+  }
+
+  input {
+    color: $textColor;
+
+    &::placeholder,
+    &::-ms-input-placeholder {
+      color: rgba($textColor, 0.5);
+      opacity: 1;
+    }
+  }
+
+  svg {
+    path[fill="#000000"],
+    path[fill="#000"],
+    text {
+      fill: $textColor;
+    }
+
+    path[stroke="#000000"],
+    path[stroke="#000"] {
+      stroke: $textColor;
+    }
+    g[fill="#000000"],
+    g[fill="#000"] {
+      fill: $textColor;
+    }
+  }
+}
+
+@mixin alternatingBlock {
+  &:nth-child(5n + 1) {
+    @include block1();
+  }
+
+  &:nth-child(5n + 2) {
+    @include block2();
+  }
+
+  &:nth-child(5n + 3) {
+    @include block3();
+  }
+
+  &:nth-child(5n + 4) {
+    @include block4();
+  }
+
+  &:nth-child(5n + 5) {
+    @include block5();
+  }
+}
+
+@mixin block1 {
+  @include block($block1TextColor, $block1BackgroundColor);
+}
+
+@mixin block2 {
+  @include block($block2TextColor, $block2BackgroundColor);
+}
+
+@mixin block3 {
+  @include block($block3TextColor, $block3BackgroundColor);
+}
+
+@mixin block4 {
+  @include block($block4TextColor, $block4BackgroundColor);
+}
+
+@mixin block5 {
+  @include block($block5TextColor, $block5BackgroundColor);
+}

@@ -1,0 +1,41 @@
+.roundsStep {
+  grid-template-columns: 2fr 1fr;
+
+  @include respond-to(phones) {
+    grid-template-columns: 1fr;
+  }
+
+  .map {
+    @include block2();
+
+    @include respond-to(phones) {
+      order: -1;
+    }
+
+    .mapImage {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .footerContainer {
+    margin-top: $sizeM;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $sizeM;
+  }
+
+  .countDown {
+    @include block3();
+  }
+
+  .matches {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: $sizeM;
+
+    @include respond-to(phones) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.layout {
+  display: grid;
+  grid-gap: $sizeM;
+  width: calc(100vw - $sizeL);
+  max-width: calc(512px - $sizeL);
+  margin: $sizeM auto;
+  align-items: start;
+
+  &.isWide {
+    max-width: calc(1920px - $sizeL);
+  }
+
+  @include respond-to(phones) {
+    max-width: calc(512px - $sizeM);
+    width: calc(100vw - $sizeM);
+
+    &.isWide {
+      max-width: calc(1920px - $sizeM);
+    }
+  }
+}

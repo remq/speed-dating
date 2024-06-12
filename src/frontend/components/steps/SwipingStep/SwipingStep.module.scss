@@ -1,0 +1,35 @@
+.swipingStep {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: calc(100vh - $sizeL);
+
+  .tinderCardsContainer {
+    position: relative;
+    flex: 1;
+    margin: $sizeM $sizeM 0 $sizeM;
+  }
+
+  .tinderCard {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin: $sizeS $sizeM $sizeM $sizeM;
+
+    .knowButton {
+      margin: 0 $sizeXS 0 0;
+      @include block1();
+    }
+
+    .dontKnowButton {
+      margin: 0 0 0 $sizeXS;
+      @include block2();
+    }
+  }
+}
