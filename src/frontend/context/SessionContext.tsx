@@ -1,4 +1,7 @@
-import { useGetSessionQuery, useGetUserQuery } from "@frontend/api/endpoints";
+import {
+  useGetSessionQuery,
+  useGetUserSessionQuery,
+} from "@frontend/api/endpoints";
 import Spinner from "@frontend/components/Spinner/Spinner";
 import { Session, User } from "@frontend/models";
 import { parseCookieString } from "@frontend/utils/cookies";
@@ -25,99 +28,69 @@ export const SessionProvider: FC<
   }
 > = ({ children, sessionId }) => {
   const [userId, setUserId] = useState<string>();
-  const [invalidationCount, setInvalidationCount] = useState(0);
+  const [authStatus, setAuthStatus] = useState<
+    "loading" | "authorised" | "unauthorised"
+  >();
   const getSessionQuery = useGetSessionQuery(sessionId, {
     refetchInterval: 5000,
+    enabled: authStatus === "unauthorised",
+  });
+  const getUserSessionQuery = useGetUserSessionQuery(sessionId, userId ?? "", {
+    refetchInterval: 5000,
+    enabled: authStatus === "authorised",
   });
 
   useEffect(() => {
     const cookies = parseCookieString(document.cookie);
     if (!cookies[sessionId]) {
-      setUserId(undefined);
+      setAuthStatus("unauthorised");
       return;
     }
 
     setUserId(cookies[sessionId]);
-  }, [invalidationCount, sessionId]);
+    setAuthStatus("authorised");
+  }, [sessionId]);
 
-  if (getSessionQuery.isLoading || getSessionQuery.isError) {
-    return <Spinner />;
+  switch (authStatus) {
+    case "loading":
+      return <Spinner />;
+    case "unauthorised":
+      if (getSessionQuery.isLoading) {
+        return <Spinner />;
+      }
+      const session = getSessionQuery.data!;
+      return (
+        <SessionContext.Provider
+          value={{
+            session,
+            invalidateSession: getSessionQuery.refetch,
+          }}
+        >
+          {children}
+        </SessionContext.Provider>
+      );
+    case "authorised":
+      if (getUserSessionQuery.isLoading) {
+        return <Spinner />;
+      }
+      const userSession = getUserSessionQuery.data!;
+      if (!userSession.user) {
+        setAuthStatus("unauthorised");
+        return <Spinner />;
+      }
+
+      return (
+        <SessionContext.Provider
+          value={{
+            session: userSession.session,
+            user: userSession.user,
+            invalidateSession: getUserSessionQuery.refetch,
+          }}
+        >
+          {children}
+        </SessionContext.Provider>
+      );
   }
-  const session = getSessionQuery.data;
-
-  const invalidateSession = () => {
-    setInvalidationCount(invalidationCount + 1);
-    getSessionQuery.refetch();
-  };
-
-  const unsetUser = () => {
-    setUserId(undefined);
-  };
-
-  if (session && userId) {
-    return (
-      <UserSessionProvider
-        unsetUser={unsetUser}
-        userId={userId}
-        session={session}
-        invalidateSession={invalidateSession}
-      >
-        {children}
-      </UserSessionProvider>
-    );
-  }
-
-  return (
-    <SessionContext.Provider value={{ session, invalidateSession }}>
-      {children}
-    </SessionContext.Provider>
-  );
-};
-
-export const UserSessionProvider: FC<
-  PropsWithChildren & {
-    session: Session;
-    userId: string;
-    unsetUser: () => void;
-    invalidateSession: () => void;
-  }
-> = ({
-  invalidateSession: baseInvalidateSession,
-  unsetUser,
-  children,
-  session,
-  userId,
-}) => {
-  const getUserQuery = useGetUserQuery(session.sessionId, userId, {
-    refetchInterval: 5000,
-  });
-
-  if (getUserQuery.isLoading) {
-    return <Spinner />;
-  }
-
-  const user = getUserQuery.data;
-  if (!user) {
-    unsetUser();
-    return <Spinner />;
-  }
-
-  const invalidateSession = () => {
-    baseInvalidateSession();
-    getUserQuery.refetch();
-  };
-
-  return (
-    <SessionContext.Provider
-      value={{
-        session,
-        user,
-        invalidateSession,
-      }}
-    >
-      {children}
-    </SessionContext.Provider>
-  );
 };
 
 export const useSession = () => {

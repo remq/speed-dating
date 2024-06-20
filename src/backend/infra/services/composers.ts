@@ -6,6 +6,7 @@ import { GetSessionUseCase } from "@backend/app/useCases/getSession";
 import { GetSessionUserUseCase } from "@backend/app/useCases/getSessionUser";
 import { GetSessionUsersUseCase } from "@backend/app/useCases/getSessionUsers";
 import { GetSessionsUseCase } from "@backend/app/useCases/getSessions";
+import { GetUserSessionUseCase } from "@backend/app/useCases/getUserSession";
 import { NextRoundUseCase } from "@backend/app/useCases/nextRound";
 import { StartSwipingUseCase } from "@backend/app/useCases/startSwiping";
 import { SubmitSessionUserLikesUseCase } from "@backend/app/useCases/submitSessionUserLikes";
@@ -18,6 +19,7 @@ import { GetSessionController } from "@backend/presentation/controllers/getSessi
 import { GetSessionUserController } from "@backend/presentation/controllers/getSessionUser";
 import { GetSessionUsersController } from "@backend/presentation/controllers/getSessionUsers";
 import { GetSessionsController } from "@backend/presentation/controllers/getSessions";
+import { GetUserSessionController } from "@backend/presentation/controllers/getUserSession";
 import { NextRoundController } from "@backend/presentation/controllers/nextRound";
 import { StartSwipingController } from "@backend/presentation/controllers/startSwiping";
 import { SubmitSessionUserLikesController } from "@backend/presentation/controllers/submitSessionUserLikes";
@@ -78,6 +80,13 @@ export const getSessionUsersComposer: Composer = () => {
   const sessionsRepository = new SessionRepository();
   const getSessionUsersUseCase = new GetSessionUsersUseCase(sessionsRepository);
   const controller = new GetSessionUsersController(getSessionUsersUseCase);
+  return controller;
+};
+
+export const getUserSessionComposer: Composer = () => {
+  const sessionsRepository = new SessionRepository();
+  const getUserSessionUseCase = new GetUserSessionUseCase(sessionsRepository);
+  const controller = new GetUserSessionController(getUserSessionUseCase);
   return controller;
 };
 

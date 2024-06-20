@@ -28,7 +28,7 @@ const HeaderCard: FC = () => {
 const PresentLobbyStep: FC = () => {
   const { session } = useSession();
   const { data } = useListUsersQuery(session?.sessionId!!, {
-    refetchInterval: 3000,
+    refetchInterval: 5000,
   });
 
   return (
@@ -47,7 +47,7 @@ const PresentLobbyStep: FC = () => {
 const PlayLobbyStep: FC = () => {
   const { session } = useSession();
   const { data } = useListUsersQuery(session?.sessionId!!, {
-    refetchInterval: 3000,
+    refetchInterval: 5000,
   });
 
   return (

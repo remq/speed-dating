@@ -40,6 +40,16 @@ export const useGetSessionQuery = (
   options?: AppQueryOptions<Session>
 ) => useAppQuery<Session>(`/api/sessions/${sessionId}`, options);
 
+export const useGetUserSessionQuery = (
+  sessionId: string,
+  userId: string,
+  options?: AppQueryOptions<{ session: Session; user: User }>
+) =>
+  useAppQuery<{ session: Session; user: User }>(
+    `/api/sessions/${sessionId}/users/${userId}/usersession`,
+    options
+  );
+
 export const useCreateSessionMutation = () =>
   useMutation<Session, unknown, { name: string; mapImage?: Blob }, string>(
     async ({ name, mapImage }) => {
