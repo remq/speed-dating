@@ -18,7 +18,10 @@ import {
 export type UserLikesMap = Record<string, string[]>;
 
 export class SessionRepository implements ISessionRepository {
-  private redisClient = createClient({ url: process.env.REDIS_URL as string });
+  private redisClient = createClient({
+    url: process.env.KV_URL as string,
+    socket: { tls: true },
+  });
 
   constructor() {
     this.redisClient.connect();
