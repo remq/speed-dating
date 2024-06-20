@@ -15,6 +15,11 @@ const nextConfig = {
         hostname: "randomuser.me",
         pathname: "/api/portraits/**",
       },
+      {
+        protocol: "https",
+        hostname: "speed-dating-blob.public.blob.vercel-storage.com",
+        port: "",
+      },
     ],
   },
   sassOptions: {
