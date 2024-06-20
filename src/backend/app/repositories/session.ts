@@ -7,7 +7,7 @@ export interface ISessionRepository {
   createSession(
     sessionId: string,
     name: string,
-    remoteMapImagePath?: string
+    mapImageUrl?: string
   ): Promise<SessionDTO>;
   getSessions(): Promise<SessionDTO[]>;
   getSession(sessionId: string): Promise<SessionDTO>;
@@ -19,7 +19,7 @@ export interface ISessionRepository {
     sessionId: string,
     userId: string,
     name: string,
-    remoteImagePath: string
+    imageUrl: string
   ): Promise<UserDTO>;
   deleteSessionUser(sessionId: string, userId: string): Promise<void>;
   submitSessionUserLikes(

@@ -12,9 +12,10 @@ export class DeleteSessionUserUseCase implements IDeleteSessionUserUseCase {
   ) {}
 
   async execute(sessionId: string, userId: string): Promise<void> {
+    const user = await this.sessionRepository.getSessionUser(userId);
     await Promise.all([
       this.sessionRepository.deleteSessionUser(sessionId, userId),
-      this.fileRepository.deleteFile(userId),
+      this.fileRepository.deleteFile(user.imageUrl),
     ]);
   }
 }

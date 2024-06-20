@@ -24,7 +24,7 @@ export class CreateSessionUserUseCase implements ICreateSessionUserUseCase {
     localImagePath: string
   ): Promise<UserDTO> {
     const userId = this.idGenerator.generateID();
-    const remoteImagePath = await this.fileRepository.uploadFile(
+    const imageUrl = await this.fileRepository.uploadFile(
       userId,
       localImagePath
     );
@@ -32,7 +32,7 @@ export class CreateSessionUserUseCase implements ICreateSessionUserUseCase {
       sessionId,
       userId,
       name,
-      remoteImagePath
+      imageUrl
     );
   }
 }

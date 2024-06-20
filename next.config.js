@@ -5,19 +5,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "25478",
-        pathname: "/files/**",
-      },
-      {
         protocol: "https",
-        hostname: "randomuser.me",
-        pathname: "/api/portraits/**",
-      },
-      {
-        protocol: "https",
-        hostname: "speed-dating-blob.public.blob.vercel-storage.com",
+        hostname: "tnwfnox2s2ov4nyj.public.blob.vercel-storage.com",
         port: "",
       },
     ],

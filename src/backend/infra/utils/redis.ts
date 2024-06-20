@@ -22,7 +22,7 @@ export const parseUser = (data: Record<string, any>): UserDTO => {
   if (
     !(
       "userId" in data &&
-      "imagePath" in data &&
+      "imageUrl" in data &&
       "name" in data &&
       "state" in data
     )
@@ -31,14 +31,10 @@ export const parseUser = (data: Record<string, any>): UserDTO => {
     throw new Error("couldn't parse user");
   }
 
-  const url = new URL(UPLOAD_URL);
-  url.pathname = data.imagePath;
-  url.searchParams.append("token", UPLOAD_TOKEN);
-
   const user: UserDTO = {
     userId: data.userId,
     name: data.name,
-    imageUrl: url.toString(),
+    imageUrl: data.imageUrl,
     state: data.state,
   };
 
@@ -52,8 +48,7 @@ export const parseSession = (data: Record<string, any>): SessionDTO => {
       "name" in data &&
       "state" in data &&
       "currentRound" in data &&
-      "rounds" in data &&
-      "mapImagePath" in data
+      "rounds" in data
     )
   ) {
     console.error("couldn't parse session", data);
@@ -66,14 +61,8 @@ export const parseSession = (data: Record<string, any>): SessionDTO => {
     currentRound: parseInt(data.currentRound, 10),
     state: data.state,
     rounds: JSON.parse(data.rounds),
+    mapImageUrl: data.mapImageUrl,
   };
-
-  if (data.mapImagePath) {
-    const url = new URL(UPLOAD_URL);
-    url.pathname = data.mapImagePath;
-    url.searchParams.append("token", UPLOAD_TOKEN);
-    session.mapImageUrl = url.toString();
-  }
 
   return session;
 };

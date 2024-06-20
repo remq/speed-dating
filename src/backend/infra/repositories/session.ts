@@ -88,7 +88,7 @@ export class SessionRepository implements ISessionRepository {
     sessionId: string,
     userId: string,
     name: string,
-    remoteImagePath: string
+    imageUrl: string
   ): Promise<UserDTO> {
     const session = await this.getSession(sessionId);
     let state: UserState;
@@ -103,7 +103,7 @@ export class SessionRepository implements ISessionRepository {
     const userData = {
       userId,
       name,
-      imagePath: remoteImagePath,
+      imageUrl,
       state,
     };
     await Promise.all([
@@ -170,7 +170,7 @@ export class SessionRepository implements ISessionRepository {
   async createSession(
     sessionId: string,
     name: string,
-    remoteMapImagePath?: string
+    mapImageUrl?: string
   ): Promise<SessionDTO> {
     const sessionData = {
       sessionId,
@@ -178,7 +178,7 @@ export class SessionRepository implements ISessionRepository {
       state: "LOBBY",
       currentRound: 0,
       rounds: "[]",
-      mapImagePath: remoteMapImagePath ?? "",
+      mapImageUrl: mapImageUrl ?? "",
     };
     await Promise.all([
       this.redisClient.hSet(generateSessionKey(sessionId), sessionData),
