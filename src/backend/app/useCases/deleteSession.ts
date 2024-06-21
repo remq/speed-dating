@@ -13,10 +13,13 @@ export class DeleteSessionUseCase implements IDeleteSessionUseCase {
 
   async execute(sessionId: string): Promise<void> {
     const session = await this.sessionRepository.getSession(sessionId);
+    const users = await this.sessionRepository.getSessionUsers(sessionId);
 
+    const fileUrls = users.map((user) => user.imageUrl);
     if (session.mapImageUrl) {
-      await this.fileRepository.deleteFile(session.mapImageUrl);
+      fileUrls.push(session.mapImageUrl);
     }
+    await this.fileRepository.deleteFile(...fileUrls);
 
     await this.sessionRepository.deleteSession(sessionId);
   }

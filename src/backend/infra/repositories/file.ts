@@ -12,7 +12,7 @@ export class FileRepository implements IFileRepository {
     return result.url;
   }
 
-  async deleteFile(url: string): Promise<void> {
-    await del(url);
+  async deleteFile(...urls: string[]): Promise<void> {
+    await del(urls);
   }
 }
