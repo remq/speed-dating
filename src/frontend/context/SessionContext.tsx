@@ -43,7 +43,6 @@ export const SessionProvider: FC<
 
   const invalidateSession = useCallback(() => {
     const cookies = parseCookieString(document.cookie);
-    console.log(cookies, cookies[sessionId]);
     if (!cookies[sessionId]) {
       setAuthStatus("unauthorised");
       return;

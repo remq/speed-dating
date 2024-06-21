@@ -11,28 +11,28 @@
   "dependencies": {
     "@react-spring/web": "^9.7.3",
     "@vercel/blob": "^0.23.3",
-    "classnames": "^2.3.2",
+    "classnames": "^2.5.1",
     "formidable": "^3.5.1",
-    "next": "14.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-hook-form": "^7.48.2",
-    "react-qr-code": "^2.0.12",
+    "next": "14.2.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-hook-form": "^7.52.0",
+    "react-qr-code": "^2.0.15",
     "react-query": "^3.39.3",
-    "react-tinder-card": "^1.6.3",
-    "redis": "^4.6.10",
-    "sharp": "^0.32.6"
+    "react-tinder-card": "^1.6.4",
+    "redis": "^4.6.14",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
-    "@types/formidable": "^3.4.4",
-    "@types/node": "20.8.10",
-    "@types/react": "18.2.35",
-    "@types/react-dom": "18.2.14",
-    "eslint": "8.53.0",
-    "eslint-config-next": "14.0.1",
-    "prettier": "^3.0.3",
-    "sass": "^1.69.5",
-    "typed-scss-modules": "^8.0.0",
-    "typescript": "5.2.2"
+    "@types/formidable": "^3.4.5",
+    "@types/node": "20.14.7",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "eslint": "9.5.0",
+    "eslint-config-next": "14.2.4",
+    "prettier": "^3.3.2",
+    "sass": "^1.77.6",
+    "typed-scss-modules": "^8.0.1",
+    "typescript": "5.5.2"
   }
 }
