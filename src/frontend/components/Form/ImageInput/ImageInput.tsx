@@ -62,7 +62,7 @@ const ImageInput = forwardRef(
           {...props}
           ref={ref}
           type="file"
-          accept="image/*"
+          accept="image/*;capture=camera"
           className={classNames(styles.imageInputInput)}
         />
       </label>
