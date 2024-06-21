@@ -18,7 +18,7 @@ export class SubmitSessionUserLikesUseCase
     userId: string,
     userIds: string[]
   ): Promise<void> {
-    await this.sessionRepository.submitSessionUserLikes(
+    await this.sessionRepository.createSessionUserLikes(
       sessionId,
       userId,
       userIds
@@ -30,8 +30,10 @@ export class SubmitSessionUserLikesUseCase
       const userLikesMap =
         await this.sessionRepository.getSessionUsersLikes(sessionId);
       const round = this.roundsGenerator.generateNextRound([], userLikesMap);
-      await this.sessionRepository.nextRound(sessionId, round);
-      await this.sessionRepository.startRounds(sessionId);
+      await Promise.all([
+        this.sessionRepository.createRound(sessionId, round),
+        this.sessionRepository.setSessionState(sessionId, "ROUNDS"),
+      ]);
     }
   }
 }

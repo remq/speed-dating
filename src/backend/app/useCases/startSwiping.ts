@@ -8,6 +8,6 @@ export class StartSwipingUseCase implements IStartSwipingUseCase {
   constructor(private sessionRepository: ISessionRepository) {}
 
   execute(sessionId: string): Promise<void> {
-    return this.sessionRepository.startSwiping(sessionId);
+    return this.sessionRepository.setSessionState(sessionId, "SWIPING");
   }
 }

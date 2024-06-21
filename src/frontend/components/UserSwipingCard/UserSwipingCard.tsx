@@ -1,11 +1,11 @@
-import { User } from "@frontend/models";
+import { UserDTO } from "@backend/domain/dtos/user";
 import classNames from "classnames";
 import Image from "next/image";
 import { FC } from "react";
 import { Text } from "../Text/Text";
 import styles from "./UserSwipingCard.module.scss";
 
-const UserSwipingCard: FC<{ user: User; className?: string }> = ({
+const UserSwipingCard: FC<{ user: UserDTO; className?: string }> = ({
   user,
   className,
 }) => {

@@ -45,7 +45,6 @@ export const parseSession = (data: Record<string, any>): SessionDTO => {
       "sessionId" in data &&
       "name" in data &&
       "state" in data &&
-      "currentRound" in data &&
       "rounds" in data
     )
   ) {
@@ -56,7 +55,6 @@ export const parseSession = (data: Record<string, any>): SessionDTO => {
   const session: SessionDTO = {
     sessionId: data.sessionId,
     name: data.name,
-    currentRound: parseInt(data.currentRound, 10),
     state: data.state,
     rounds: JSON.parse(data.rounds),
     mapImageUrl: data.mapImageUrl,

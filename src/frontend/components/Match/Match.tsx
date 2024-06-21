@@ -1,4 +1,4 @@
-import { User } from "@frontend/models";
+import { UserDTO } from "@backend/domain/dtos/user";
 import variables from "@frontend/styles/exports.module.scss";
 import classNames from "classnames";
 import Image from "next/image";
@@ -9,8 +9,8 @@ import styles from "./Match.module.scss";
 
 const Match: FC<{
   className?: string;
-  userOne: User;
-  userTwo: User;
+  userOne: UserDTO;
+  userTwo: UserDTO;
   tableNumber: number;
 }> = ({ className, userOne, userTwo, tableNumber }) => {
   return (

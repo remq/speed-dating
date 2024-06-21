@@ -1,4 +1,4 @@
-import { User } from "@frontend/models";
+import { UserDTO } from "@backend/domain/dtos/user";
 import variables from "@frontend/styles/exports.module.scss";
 import classNames from "classnames";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import Card from "../Card/Card";
 import { Text } from "../Text/Text";
 import styles from "./UserCard.module.scss";
 
-const UserCard: FC<{ user: User; className?: string }> = ({
+const UserCard: FC<{ user: UserDTO; className?: string }> = ({
   user,
   className,
 }) => {

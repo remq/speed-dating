@@ -19,6 +19,6 @@ export class NextRoundUseCase implements INextRoundUseCase {
       session.rounds,
       userLikesMap
     );
-    await this.sessionRepository.nextRound(sessionId, nextRound);
+    await this.sessionRepository.createRound(sessionId, nextRound);
   }
 }

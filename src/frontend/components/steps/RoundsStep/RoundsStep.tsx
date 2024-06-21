@@ -1,3 +1,4 @@
+import { UserDTO } from "@backend/domain/dtos/user";
 import { useListUsersQuery } from "@frontend/api/endpoints";
 import Card from "@frontend/components/Card/Card";
 import CountDownCard from "@frontend/components/CountDownCard/CountDownCard";
@@ -8,7 +9,6 @@ import QRCard from "@frontend/components/QRCard/QRCard";
 import Questions from "@frontend/components/Questions/Questions";
 import { Text, Title } from "@frontend/components/Text/Text";
 import { useSession } from "@frontend/context/SessionContext";
-import { User } from "@frontend/models";
 import Image from "next/image";
 import { FC } from "react";
 import { SpinnerLayout } from "../../Spinner/Spinner";
@@ -16,7 +16,7 @@ import styles from "./RoundsStep.module.scss";
 
 const TIME_PER_ROUND = 5 * 60;
 
-const getUserById = (users: User[], userId: string) =>
+const getUserById = (users: UserDTO[], userId: string) =>
   users.find((user) => user.userId === userId)!;
 
 const RoundsStep: FC<{ isPresenting: boolean }> = ({ isPresenting }) => {
@@ -46,7 +46,7 @@ const PresentRoundsStep: FC = () => {
   }
 
   const users = listUsersQuery.data;
-  const currentRound = session.rounds[session.currentRound];
+  const currentRound = session.rounds[session.rounds.length - 1];
 
   if (!users || !currentRound) {
     return <SpinnerLayout />;
@@ -79,7 +79,7 @@ const PresentRoundsStep: FC = () => {
       </div>
       <div>
         <Card className={styles.map}>
-          <Title>Round {session.currentRound + 1}</Title>
+          <Title>Round {session.rounds.length}</Title>
           <Text>Meet your match at the right number.</Text>
           {session.mapImageUrl && (
             <Image
@@ -94,7 +94,7 @@ const PresentRoundsStep: FC = () => {
         <div className={styles.footerContainer}>
           <QRCard showText={false} />
           <CountDownCard
-            refreshOn={session.currentRound}
+            refreshOn={session.rounds.length}
             className={styles.countDown}
             seconds={TIME_PER_ROUND}
           />
@@ -113,7 +113,7 @@ const PlayRoundsStep: FC = () => {
   }
 
   const users = listUsersQuery.data;
-  const currentRound = session.rounds[session.currentRound];
+  const currentRound = session.rounds[session.rounds.length - 1];
 
   if (!users || !currentRound) {
     return <SpinnerLayout />;
@@ -171,7 +171,7 @@ const PlayRoundsStep: FC = () => {
       </div>
       <div>
         <Card className={styles.map}>
-          <Title>Round {session.currentRound + 1}</Title>
+          <Title>Round {session.rounds.length}</Title>
           <Text>Meet your match at the right number.</Text>
           {session.mapImageUrl && (
             <Image
@@ -184,7 +184,7 @@ const PlayRoundsStep: FC = () => {
           )}
         </Card>
       </div>
-      <Questions refreshOn={session.currentRound} />
+      <Questions refreshOn={session.rounds.length} />
       <DeleteUserCard />
     </Layout>
   );

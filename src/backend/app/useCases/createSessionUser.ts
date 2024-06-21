@@ -1,4 +1,5 @@
 import { UserDTO } from "@backend/domain/dtos/user";
+import { UserState } from "@backend/domain/enums/userState";
 import { IIDGenerator } from "../providers/idGenerator";
 import { IFileRepository } from "../repositories/file";
 import { ISessionRepository } from "../repositories/session";
@@ -23,16 +24,30 @@ export class CreateSessionUserUseCase implements ICreateSessionUserUseCase {
     name: string,
     localImagePath: string
   ): Promise<UserDTO> {
+    const session = await this.sessionRepository.getSession(sessionId);
     const userId = this.idGenerator.generateID();
+
     const imageUrl = await this.fileRepository.uploadFile(
       userId,
       localImagePath
     );
+
+    let state: UserState;
+    switch (session.state) {
+      case "ROUNDS":
+        state = "SWIPING";
+        break;
+      default:
+        state = session.state;
+        break;
+    }
+
     return this.sessionRepository.createSessionUser(
       sessionId,
       userId,
       name,
-      imageUrl
+      imageUrl,
+      state
     );
   }
 }

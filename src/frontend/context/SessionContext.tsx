@@ -1,9 +1,10 @@
+import { SessionDTO } from "@backend/domain/dtos/session";
+import { UserDTO } from "@backend/domain/dtos/user";
 import {
   useGetSessionQuery,
   useGetUserSessionQuery,
 } from "@frontend/api/endpoints";
 import Spinner from "@frontend/components/Spinner/Spinner";
-import { Session, User } from "@frontend/models";
 import { parseCookieString } from "@frontend/utils/cookies";
 import {
   FC,
@@ -16,8 +17,8 @@ import {
 } from "react";
 
 export type SessionContextProps = {
-  session?: Session;
-  user?: User;
+  session?: SessionDTO;
+  user?: UserDTO;
   invalidateSession: () => void;
 };
 

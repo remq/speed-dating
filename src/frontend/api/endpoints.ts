@@ -1,4 +1,5 @@
-import { Session, User } from "@frontend/models";
+import { SessionDTO } from "@backend/domain/dtos/session";
+import { UserDTO } from "@backend/domain/dtos/user";
 import { UseQueryOptions, useMutation, useQuery } from "react-query";
 
 type AppQueryOptions<T> = Omit<
@@ -32,26 +33,26 @@ const useAppMutation = <T = unknown, V = unknown>(path: string) =>
     return parseResponse(response);
   });
 
-export const useListSessionsQuery = (options?: AppQueryOptions<Session[]>) =>
-  useAppQuery<Session[]>("/api/sessions", options);
+export const useListSessionsQuery = (options?: AppQueryOptions<SessionDTO[]>) =>
+  useAppQuery<SessionDTO[]>("/api/sessions", options);
 
 export const useGetSessionQuery = (
   sessionId: string,
-  options?: AppQueryOptions<Session>
-) => useAppQuery<Session>(`/api/sessions/${sessionId}`, options);
+  options?: AppQueryOptions<SessionDTO>
+) => useAppQuery<SessionDTO>(`/api/sessions/${sessionId}`, options);
 
 export const useGetUserSessionQuery = (
   sessionId: string,
   userId: string,
-  options?: AppQueryOptions<{ session: Session; user: User }>
+  options?: AppQueryOptions<{ session: SessionDTO; user: UserDTO }>
 ) =>
-  useAppQuery<{ session: Session; user: User }>(
+  useAppQuery<{ session: SessionDTO; user: UserDTO }>(
     `/api/sessions/${sessionId}/users/${userId}/usersession`,
     options
   );
 
 export const useCreateSessionMutation = () =>
-  useMutation<Session, unknown, { name: string; mapImage?: Blob }, string>(
+  useMutation<SessionDTO, unknown, { name: string; mapImage?: Blob }, string>(
     async ({ name, mapImage }) => {
       const formData = new FormData();
       formData.append("name", name);
@@ -63,7 +64,7 @@ export const useCreateSessionMutation = () =>
         method: "POST",
         body: formData,
       });
-      return (await response.json()) as Session;
+      return (await response.json()) as SessionDTO;
     }
   );
 
@@ -106,18 +107,18 @@ export const useNextRoundMutation = (sessionId: string) =>
 
 export const useListUsersQuery = (
   sessionId: string,
-  options?: AppQueryOptions<User[]>
-) => useAppQuery<User[]>(`/api/sessions/${sessionId}/users`, options);
+  options?: AppQueryOptions<UserDTO[]>
+) => useAppQuery<UserDTO[]>(`/api/sessions/${sessionId}/users`, options);
 
 export const useGetUserQuery = (
   sessionId: string,
   userId: string,
-  options?: AppQueryOptions<User>
+  options?: AppQueryOptions<UserDTO>
 ) => useAppQuery(`/api/sessions/${sessionId}/users/${userId}`, options);
 
 export const useRegisterMutation = () =>
   useMutation<
-    User,
+    UserDTO,
     unknown,
     { sessionId: string; name: string; image: Blob },
     string
@@ -130,5 +131,5 @@ export const useRegisterMutation = () =>
       method: "POST",
       body: formData,
     });
-    return (await response.json()) as User;
+    return (await response.json()) as UserDTO;
   });

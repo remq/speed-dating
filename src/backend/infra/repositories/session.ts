@@ -27,16 +27,22 @@ export class SessionRepository implements ISessionRepository {
     this.redisClient.connect();
   }
 
-  async startRounds(sessionId: string): Promise<void> {
+  async setSessionState(sessionId: string, state: SessionState): Promise<void> {
     const userIds = await this.redisClient.lRange(
       generateSessionUsersKey(sessionId),
       0,
       -1
     );
-    await this.setSessionStateForUsers(sessionId, userIds, "ROUNDS");
+
+    await Promise.all([
+      ...userIds.map((userId) =>
+        this.redisClient.hSet(generateUserKey(userId), "state", state)
+      ),
+      this.redisClient.hSet(generateSessionKey(sessionId), "state", state),
+    ]);
   }
 
-  async submitSessionUserLikes(
+  async createSessionUserLikes(
     sessionId: string,
     userId: string,
     likedUserIds: string[]
@@ -88,18 +94,9 @@ export class SessionRepository implements ISessionRepository {
     sessionId: string,
     userId: string,
     name: string,
-    imageUrl: string
+    imageUrl: string,
+    state: UserState
   ): Promise<UserDTO> {
-    const session = await this.getSession(sessionId);
-    let state: UserState;
-    switch (session.state) {
-      case "ROUNDS":
-        state = "SWIPING";
-        break;
-      default:
-        state = session.state;
-        break;
-    }
     const userData = {
       userId,
       name,
@@ -125,26 +122,14 @@ export class SessionRepository implements ISessionRepository {
     return data.map((userData) => parseUser(userData));
   }
 
-  async startSwiping(sessionId: string): Promise<void> {
-    const userIds = await this.redisClient.lRange(
-      generateSessionUsersKey(sessionId),
-      0,
-      -1
-    );
-    await this.setSessionStateForUsers(sessionId, userIds, "SWIPING");
-  }
-
-  async nextRound(sessionId: string, round: RoundDTO): Promise<void> {
+  async createRound(sessionId: string, round: RoundDTO): Promise<void> {
     const session = await this.getSession(sessionId);
     const sessionKey = generateSessionKey(sessionId);
-    await Promise.all([
-      this.redisClient.hSet(sessionKey, "currentRound", session.rounds.length),
-      this.redisClient.hSet(
-        sessionKey,
-        "rounds",
-        JSON.stringify([...session.rounds, round])
-      ),
-    ]);
+    await this.redisClient.hSet(
+      sessionKey,
+      "rounds",
+      JSON.stringify([...session.rounds, round])
+    );
   }
 
   async deleteSession(sessionId: string): Promise<void> {
@@ -176,7 +161,6 @@ export class SessionRepository implements ISessionRepository {
       sessionId,
       name,
       state: "LOBBY",
-      currentRound: 0,
       rounds: "[]",
       mapImageUrl: mapImageUrl ?? "",
     };
@@ -199,18 +183,5 @@ export class SessionRepository implements ISessionRepository {
       )
     );
     return data.map((sessionData) => parseSession(sessionData));
-  }
-
-  private async setSessionStateForUsers(
-    sessionId: string,
-    userIds: string[],
-    state: SessionState
-  ) {
-    await Promise.all([
-      ...userIds.map((userId) =>
-        this.redisClient.hSet(generateUserKey(userId), "state", state)
-      ),
-      this.redisClient.hSet(generateSessionKey(sessionId), "state", state),
-    ]);
   }
 }
