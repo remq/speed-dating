@@ -9,6 +9,7 @@ import {
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -40,8 +41,9 @@ export const SessionProvider: FC<
     enabled: authStatus === "authorised",
   });
 
-  useEffect(() => {
+  const invalidateSession = useCallback(() => {
     const cookies = parseCookieString(document.cookie);
+    console.log(cookies, cookies[sessionId]);
     if (!cookies[sessionId]) {
       setAuthStatus("unauthorised");
       return;
@@ -50,6 +52,8 @@ export const SessionProvider: FC<
     setUserId(cookies[sessionId]);
     setAuthStatus("authorised");
   }, [sessionId]);
+
+  useEffect(invalidateSession, [sessionId]);
 
   switch (authStatus) {
     case "loading":
@@ -63,7 +67,7 @@ export const SessionProvider: FC<
         <SessionContext.Provider
           value={{
             session,
-            invalidateSession: getSessionQuery.refetch,
+            invalidateSession,
           }}
         >
           {children}
@@ -73,8 +77,8 @@ export const SessionProvider: FC<
       if (getUserSessionQuery.isLoading) {
         return <Spinner />;
       }
-      const userSession = getUserSessionQuery.data!;
-      if (!userSession.user) {
+      const userSession = getUserSessionQuery.data;
+      if (!userSession?.user) {
         setAuthStatus("unauthorised");
         return <Spinner />;
       }
@@ -84,7 +88,7 @@ export const SessionProvider: FC<
           value={{
             session: userSession.session,
             user: userSession.user,
-            invalidateSession: getUserSessionQuery.refetch,
+            invalidateSession,
           }}
         >
           {children}
