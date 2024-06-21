@@ -1,8 +1,6 @@
 import { SessionDTO } from "@backend/domain/dtos/session";
 import { UserDTO } from "@backend/domain/dtos/user";
 
-const UPLOAD_TOKEN = process.env.UPLOAD_TOKEN as string;
-const UPLOAD_URL = process.env.UPLOAD_URL as string;
 const USER_PREFIX = "user";
 const SESSION_USERS_PREFIX = "sessionusers";
 const SESSION_PREFIX = "session";
