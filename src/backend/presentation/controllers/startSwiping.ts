@@ -1,29 +1,8 @@
-import { IGetSessionUseCase } from "@backend/app/useCases/getSession";
-import { IStartSwipingUseCase } from "@backend/app/useCases/startSwiping";
-import { NextApiRequest, NextApiResponse } from "next";
-import { IController } from "./_controller";
+"use server";
 
-export class StartSwipingController implements IController {
-  constructor(
-    private getSessionUseCase: IGetSessionUseCase,
-    private startSwipingUseCase: IStartSwipingUseCase
-  ) {}
+import { composeStartSwipingUseCase } from "@backend/infra/services/composers";
 
-  async handle(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    const pathParts = request.url?.split("/")!;
-    const sessionId = pathParts[3];
-
-    const session = await this.getSessionUseCase.execute(sessionId);
-
-    if (session?.state !== "LOBBY") {
-      response.status(400).end();
-    }
-
-    await this.startSwipingUseCase.execute(sessionId);
-
-    response.status(200).end();
-  }
-}
+export const handleStartSwiping = async (sessionId: string) => {
+  const startSwipingUseCase = composeStartSwipingUseCase();
+  return startSwipingUseCase.execute(sessionId);
+};

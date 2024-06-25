@@ -46,10 +46,7 @@ const PlaySwipingStep: FC = () => {
   const listUsersQuery = useListUsersQuery(session!.sessionId);
   const [likedIds, setLikedIds] = useState<string[]>([]);
   const [swipeCount, setSwipeCount] = useState(0);
-  const submitLikesMutation = useSubmitLikesMutation(
-    session!.sessionId,
-    user!.userId
-  );
+  const submitLikesMutation = useSubmitLikesMutation();
 
   const users = listUsersQuery.data?.filter((u) => u.userId !== user!.userId);
   const [swipeUser, backgroundUser] = users?.slice(swipeCount) ?? [];
@@ -64,7 +61,11 @@ const PlaySwipingStep: FC = () => {
       ) {
         return;
       }
-      await submitLikesMutation.mutateAsync({ userIds: likedIds });
+      await submitLikesMutation.mutateAsync({
+        userId: user!.userId,
+        sessionId: session!.sessionId,
+        userIds: likedIds,
+      });
       await invalidateSession();
     })();
   }, [swipeCount, likedIds, users, submitLikesMutation, invalidateSession]);

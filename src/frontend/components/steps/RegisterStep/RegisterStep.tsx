@@ -24,12 +24,12 @@ const RegisterStep: FC = () => {
 
   const onSubmit = async (fieldValues: RegisterFieldValues) => {
     const name = fieldValues.name;
-    const image = await shrinkImage(fieldValues.files[0]);
+    const userImage = await shrinkImage(fieldValues.files[0]);
 
     const user = await registerMutation.mutateAsync({
       sessionId: session!.sessionId,
       name,
-      image,
+      userImage,
     });
 
     setCookie(session!.sessionId, user.userId);

@@ -1,3 +1,5 @@
+"use client";
+
 import { useCreateSessionMutation } from "@frontend/api/endpoints";
 import Card from "@frontend/components/Card/Card";
 import Button from "@frontend/components/Form/Button/Button";
@@ -6,9 +8,8 @@ import TextInput from "@frontend/components/Form/TextInput/TextInput";
 import Layout from "@frontend/components/Layout/Layout";
 import { Text, Title } from "@frontend/components/Text/Text";
 import { shrinkImage } from "@frontend/utils/image";
-import { NextPage } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
 interface CreateFieldValues {
@@ -16,7 +17,7 @@ interface CreateFieldValues {
   files: FileList;
 }
 
-const CreateSessionPage: NextPage = () => {
+const CreateSessionPage = () => {
   const router = useRouter();
   const createSessionMutation = useCreateSessionMutation();
   const methods = useForm<CreateFieldValues>();
@@ -24,11 +25,13 @@ const CreateSessionPage: NextPage = () => {
 
   const onSubmit = async (fieldValues: CreateFieldValues) => {
     const name = fieldValues.name;
-    let mapImage: Blob | undefined = undefined;
+    const formData = new FormData();
+    formData.append("name", name);
     if (fieldValues.files.length) {
-      mapImage = await shrinkImage(fieldValues.files[0]);
+      const mapImage = await shrinkImage(fieldValues.files[0]);
+      formData.append("mapImage", mapImage);
     }
-    await createSessionMutation.mutateAsync({ name, mapImage });
+    await createSessionMutation.mutateAsync(formData);
     router.push("/");
   };
 

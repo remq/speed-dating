@@ -10,12 +10,14 @@ import styles from "./SessionControls.module.scss";
 const SessionControls: FC = () => {
   const { session, invalidateSession } = useSession();
 
-  const { mutate: startSwiping } = useStartSwipingMutation(
-    session?.sessionId ?? ""
-  );
-  const { mutate: nextRound } = useNextRoundMutation(session?.sessionId ?? "");
+  const { mutate: startSwiping } = useStartSwipingMutation();
+  const { mutate: nextRound } = useNextRoundMutation();
 
   const state = session?.state;
+
+  if (!session) {
+    return null;
+  }
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -33,11 +35,11 @@ const SessionControls: FC = () => {
 
       switch (state) {
         case "LOBBY":
-          await startSwiping({});
+          await startSwiping({ sessionId: session.sessionId });
           await invalidateSession();
           break;
         case "ROUNDS":
-          await nextRound({});
+          await nextRound({ sessionId: session.sessionId });
           await invalidateSession();
           break;
         default:

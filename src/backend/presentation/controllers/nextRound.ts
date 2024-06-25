@@ -1,29 +1,8 @@
-import { IGetSessionUseCase } from "@backend/app/useCases/getSession";
-import { INextRoundUseCase } from "@backend/app/useCases/nextRound";
-import { NextApiRequest, NextApiResponse } from "next";
-import { IController } from "./_controller";
+"use server";
 
-export class NextRoundController implements IController {
-  constructor(
-    private getSessionUseCase: IGetSessionUseCase,
-    private nextRoundUseCase: INextRoundUseCase
-  ) {}
+import { composeNextRoundUseCase } from "@backend/infra/services/composers";
 
-  async handle(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    const pathParts = request.url?.split("/")!;
-    const sessionId = pathParts[3];
-
-    const session = await this.getSessionUseCase.execute(sessionId);
-
-    if (session?.state !== "ROUNDS") {
-      response.status(400).end();
-    }
-
-    await this.nextRoundUseCase.execute(sessionId);
-
-    response.status(200).end();
-  }
-}
+export const handleNextRound = async (sessionId: string) => {
+  const nextRoundUseCase = composeNextRoundUseCase();
+  return nextRoundUseCase.execute(sessionId);
+};

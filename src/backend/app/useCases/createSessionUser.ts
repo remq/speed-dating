@@ -5,11 +5,7 @@ import { IFileRepository } from "../repositories/file";
 import { ISessionRepository } from "../repositories/session";
 
 export interface ICreateSessionUserUseCase {
-  execute(
-    sessionId: string,
-    name: string,
-    localImagePath: string
-  ): Promise<UserDTO>;
+  execute(sessionId: string, name: string, userImage: Blob): Promise<UserDTO>;
 }
 
 export class CreateSessionUserUseCase implements ICreateSessionUserUseCase {
@@ -22,15 +18,12 @@ export class CreateSessionUserUseCase implements ICreateSessionUserUseCase {
   async execute(
     sessionId: string,
     name: string,
-    localImagePath: string
+    userImage: Blob
   ): Promise<UserDTO> {
     const session = await this.sessionRepository.getSession(sessionId);
     const userId = this.idGenerator.generateID();
 
-    const imageUrl = await this.fileRepository.uploadFile(
-      userId,
-      localImagePath
-    );
+    const imageUrl = await this.fileRepository.uploadFile(userId, userImage);
 
     let state: UserState;
     switch (session.state) {

@@ -1,4 +1,4 @@
 export interface IFileRepository {
-  uploadFile(id: string, filePath: string): Promise<string>;
+  uploadFile(id: string, file: Blob): Promise<string>;
   deleteFile(...urls: string[]): Promise<void>;
 }

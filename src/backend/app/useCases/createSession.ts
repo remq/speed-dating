@@ -4,7 +4,7 @@ import { IFileRepository } from "../repositories/file";
 import { ISessionRepository } from "../repositories/session";
 
 export interface ICreateSessionUseCase {
-  execute(name: string, localMapImagePath?: string): Promise<SessionDTO>;
+  execute(name: string, mapImageFile?: Blob): Promise<SessionDTO>;
 }
 
 export class CreateSessionUseCase implements ICreateSessionUseCase {
@@ -14,14 +14,14 @@ export class CreateSessionUseCase implements ICreateSessionUseCase {
     private idGenerator: IIDGenerator
   ) {}
 
-  async execute(name: string, localMapImagePath?: string): Promise<SessionDTO> {
+  async execute(name: string, mapImageFile?: Blob): Promise<SessionDTO> {
     const sessionId = this.idGenerator.generateID();
 
     let remoteImagePath: string | undefined = undefined;
-    if (localMapImagePath) {
+    if (mapImageFile) {
       remoteImagePath = await this.fileRepository.uploadFile(
         sessionId,
-        localMapImagePath
+        mapImageFile
       );
     }
 

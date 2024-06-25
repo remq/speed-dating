@@ -1,41 +1,12 @@
-import { ICreateSessionUserUseCase } from "@backend/app/useCases/createSessionUser";
-import { Fields, Files, Formidable } from "formidable";
-import { NextApiRequest, NextApiResponse } from "next";
-import { IController } from "./_controller";
+"use server";
 
-export class CreateSessionUserController implements IController {
-  constructor(private createSessionUserUseCase: ICreateSessionUserUseCase) {}
+import { composeCreateSessionUserUseCase } from "@backend/infra/services/composers";
 
-  async handle(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    const pathParts = request.url?.split("/")!;
+export const handleCreateSessionUser = async (formData: FormData) => {
+  const sessionId = formData.get("sessionId") as string;
+  const name = formData.get("name") as string;
+  const userImage = formData.get("userImage") as Blob;
 
-    const sessionId = pathParts[3];
-
-    const { error, fields, files } = await new Promise<{
-      error: any;
-      fields: Fields<string>;
-      files: Files<string>;
-    }>((resolve) =>
-      new Formidable().parse(request, (error, fields, files) =>
-        resolve({ error, fields, files })
-      )
-    );
-    const name = fields.name?.[0];
-    const imageFile = files.image?.[0];
-    if (error || !name || !imageFile || imageFile.mimetype !== "image/jpeg") {
-      response.status(400).end();
-      return;
-    }
-
-    const user = await this.createSessionUserUseCase.execute(
-      sessionId,
-      name,
-      imageFile.filepath
-    );
-
-    response.status(200).json(user);
-  }
-}
+  const createSessionUserUseCase = composeCreateSessionUserUseCase();
+  return createSessionUserUseCase.execute(sessionId, name, userImage);
+};

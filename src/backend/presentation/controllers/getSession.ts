@@ -1,18 +1,8 @@
-import { IGetSessionUseCase } from "@backend/app/useCases/getSession";
-import { NextApiRequest, NextApiResponse } from "next";
-import { IController } from "./_controller";
+"use server";
 
-export class GetSessionController implements IController {
-  constructor(private getSessionUseCase: IGetSessionUseCase) {}
+import { composeGetSessionUseCase } from "@backend/infra/services/composers";
 
-  async handle(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    const pathParts = request.url?.split("/")!;
-    const sessionId = pathParts[3];
-
-    const session = await this.getSessionUseCase.execute(sessionId);
-    response.status(200).json(session);
-  }
-}
+export const handleGetSession = async (sessionId: string) => {
+  const getSessionUseCase = composeGetSessionUseCase();
+  return getSessionUseCase.execute(sessionId);
+};

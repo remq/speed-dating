@@ -1,3 +1,5 @@
+"use client";
+
 import {
   useDeleteSessionMutation,
   useListSessionsQuery,
@@ -7,10 +9,9 @@ import Button from "@frontend/components/Form/Button/Button";
 import Layout from "@frontend/components/Layout/Layout";
 import { SpinnerCard } from "@frontend/components/Spinner/Spinner";
 import { Text, Title } from "@frontend/components/Text/Text";
-import { NextPage } from "next";
 import Link from "next/link";
 
-const Home: NextPage = () => {
+const Home = () => {
   const { data, isLoading, refetch } = useListSessionsQuery();
   const deleteSessionMutation = useDeleteSessionMutation();
 

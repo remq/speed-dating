@@ -1,6 +1,7 @@
+"use client";
+
 import Card from "@frontend/components/Card/Card";
 import Layout from "@frontend/components/Layout/Layout";
-import { SpinnerLayout } from "@frontend/components/Spinner/Spinner";
 import { Text, Title } from "@frontend/components/Text/Text";
 import LobbyStep from "@frontend/components/steps/LobbyStep/LobbyStep";
 import RegisterStep from "@frontend/components/steps/RegisterStep/RegisterStep";
@@ -8,8 +9,6 @@ import RoundsStep from "@frontend/components/steps/RoundsStep/RoundsStep";
 import SwipingStep from "@frontend/components/steps/SwipingStep/SwipingStep";
 import WaitingStep from "@frontend/components/steps/WaitingStep/WaitingStep";
 import { SessionProvider, useSession } from "@frontend/context/SessionContext";
-import { NextPage } from "next";
-import { useRouter } from "next/router";
 import { FC } from "react";
 
 const SessionSteps: FC = () => {
@@ -40,14 +39,11 @@ const SessionSteps: FC = () => {
   }
 };
 
-const PlayPage: NextPage = () => {
-  const router = useRouter();
-  const sessionId = router.query.sessionId as string;
-
-  if (!sessionId) {
-    return <SpinnerLayout />;
-  }
-
+const PlayPage = ({
+  params: { sessionId },
+}: {
+  params: { sessionId: string };
+}) => {
   return (
     <SessionProvider sessionId={sessionId}>
       <SessionSteps />

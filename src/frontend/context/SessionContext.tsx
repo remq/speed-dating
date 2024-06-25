@@ -37,7 +37,7 @@ export const SessionProvider: FC<
     refetchInterval: 5000,
     enabled: authStatus === "unauthorised",
   });
-  const getUserSessionQuery = useGetUserSessionQuery(sessionId, userId ?? "", {
+  const getUserSessionQuery = useGetUserSessionQuery(sessionId, userId!, {
     refetchInterval: 5000,
     enabled: authStatus === "authorised",
   });

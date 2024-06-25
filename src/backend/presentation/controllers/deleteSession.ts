@@ -1,19 +1,8 @@
-import { IDeleteSessionUseCase } from "@backend/app/useCases/deleteSession";
-import { NextApiRequest, NextApiResponse } from "next";
-import { IController } from "./_controller";
+"use server";
 
-export class DeleteSessionController implements IController {
-  constructor(private deleteSessionUseCase: IDeleteSessionUseCase) {}
+import { composeDeleteSessionUseCase } from "@backend/infra/services/composers";
 
-  async handle(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    const pathParts = request.url?.split("/")!;
-    const sessionId = pathParts[3];
-
-    await this.deleteSessionUseCase.execute(sessionId);
-
-    response.status(200).end();
-  }
-}
+export const handleDeleteSession = async (sessionId: string) => {
+  const deleteSessionUseCase = composeDeleteSessionUseCase();
+  return deleteSessionUseCase.execute(sessionId);
+};

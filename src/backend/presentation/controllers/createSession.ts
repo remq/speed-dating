@@ -1,40 +1,11 @@
-import { ICreateSessionUseCase } from "@backend/app/useCases/createSession";
-import { Fields, Files, Formidable } from "formidable";
-import { NextApiRequest, NextApiResponse } from "next";
-import { IController } from "./_controller";
+"use server";
 
-export class CreateSessionController implements IController {
-  constructor(private createSessionUseCase: ICreateSessionUseCase) {}
+import { composeCreateSessionUseCase } from "@backend/infra/services/composers";
 
-  async handle(
-    request: NextApiRequest,
-    response: NextApiResponse
-  ): Promise<void> {
-    const { error, fields, files } = await new Promise<{
-      error: any;
-      fields: Fields<string>;
-      files: Files<string>;
-    }>((resolve) =>
-      new Formidable().parse(request, (error, fields, files) =>
-        resolve({ error, fields, files })
-      )
-    );
-    const name = fields.name?.[0];
-    const mapImageFile = files.mapImage?.[0];
-    if (
-      error ||
-      !name ||
-      (mapImageFile && mapImageFile.mimetype !== "image/jpeg")
-    ) {
-      response.status(400).end();
-      return;
-    }
+export const handleCreateSession = async (formData: FormData) => {
+  const name = formData.get("name") as string;
+  const mapImage = formData.get("mapImage") as Blob;
 
-    const session = await this.createSessionUseCase.execute(
-      name,
-      mapImageFile?.filepath
-    );
-
-    response.status(200).json(session);
-  }
-}
+  const createSessionUseCase = composeCreateSessionUseCase();
+  return createSessionUseCase.execute(name, mapImage);
+};
