@@ -9,7 +9,7 @@ import { Text } from "../Text/Text";
 const DeleteUserCard: FC = () => {
   const { user, session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { mutate, isLoading } = useDeleteUserMutation(session?.sessionId || "");
+  const { mutate, isLoading } = useDeleteUserMutation();
 
   const closeModal = useCallback(
     () => setIsModalOpen(() => false),
@@ -22,11 +22,11 @@ const DeleteUserCard: FC = () => {
   );
 
   const deleteUser = useCallback(async () => {
-    await mutate({ userId: user?.userId!! });
+    await mutate({ userId: user!.userId, sessionId: session!.sessionId });
     closeModal();
   }, [user?.userId, mutate, closeModal]);
 
-  if (!user) {
+  if (!user || !session) {
     return null;
   }
 
