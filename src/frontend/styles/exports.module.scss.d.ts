@@ -1,10 +1,5 @@
 export type Styles = {
   foo: string;
-  primaryBackgroundColor: string;
-  primaryColor: string;
-  primaryTextColor: string;
-  secondaryBackgroundColor: string;
-  secondaryColor: string;
   sizeL: string;
   sizeM: string;
   sizeS: string;

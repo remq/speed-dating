@@ -24,12 +24,12 @@
 
     .knowButton {
       margin: 0 $sizeXS 0 0;
-      @include block1();
+      @include blockNegative();
     }
 
     .dontKnowButton {
       margin: 0 0 0 $sizeXS;
-      @include block2();
+      @include blockPositive();
     }
   }
 }

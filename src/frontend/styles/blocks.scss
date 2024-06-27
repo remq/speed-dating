@@ -81,3 +81,11 @@
 @mixin block5 {
   @include block($block5TextColor, $block5BackgroundColor);
 }
+
+@mixin blockPositive {
+  @include block($blockPositiveTextColor, $blockPositiveBackgroundColor);
+}
+
+@mixin blockNegative {
+  @include block($blockNegativeTextColor, $blockNegativeBackgroundColor);
+}

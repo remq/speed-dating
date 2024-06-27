@@ -125,7 +125,7 @@ const PlaySwipingStep: FC = () => {
           }}
           className={styles.knowButton}
         >
-          Already know
+          Already know, pass
         </Button>
         <Button
           onClick={() => {
@@ -133,7 +133,7 @@ const PlaySwipingStep: FC = () => {
           }}
           className={styles.dontKnowButton}
         >
-          Don&apos;t know
+          New face? Match!
         </Button>
       </div>
     </div>

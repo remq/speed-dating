@@ -4,7 +4,7 @@ import {
   useGetSessionQuery,
   useGetUserSessionQuery,
 } from "@frontend/api/endpoints";
-import Spinner from "@frontend/components/Spinner/Spinner";
+import Spinner, { SpinnerLayout } from "@frontend/components/Spinner/Spinner";
 import { parseCookieString } from "@frontend/utils/cookies";
 import {
   FC,
@@ -46,21 +46,23 @@ export const SessionProvider: FC<
     const cookies = parseCookieString(document.cookie);
     if (!cookies[sessionId]) {
       setAuthStatus("unauthorised");
+      getSessionQuery.refetch();
       return;
     }
 
     setUserId(cookies[sessionId]);
     setAuthStatus("authorised");
+    getUserSessionQuery.refetch();
   }, [sessionId]);
 
   useEffect(invalidateSession, [sessionId]);
 
   switch (authStatus) {
     case "loading":
-      return <Spinner />;
+      return <SpinnerLayout />;
     case "unauthorised":
       if (getSessionQuery.isLoading) {
-        return <Spinner />;
+        return <SpinnerLayout />;
       }
       const session = getSessionQuery.data!;
       return (
@@ -80,7 +82,7 @@ export const SessionProvider: FC<
       const userSession = getUserSessionQuery.data;
       if (!userSession?.user) {
         setAuthStatus("unauthorised");
-        return <Spinner />;
+        return <SpinnerLayout />;
       }
 
       return (
