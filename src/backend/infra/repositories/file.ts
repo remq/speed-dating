@@ -11,6 +11,8 @@ export class FileRepository implements IFileRepository {
   }
 
   async deleteFile(...urls: string[]): Promise<void> {
-    await del(urls);
+    if (urls.length) {
+      await del(urls);
+    }
   }
 }
