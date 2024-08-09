@@ -10,6 +10,7 @@ import { Text, Title } from "@frontend/components/Text/Text";
 import { shrinkImage } from "@frontend/utils/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 interface CreateFieldValues {
@@ -21,7 +22,7 @@ const CreateSessionPage = () => {
   const router = useRouter();
   const createSessionMutation = useCreateSessionMutation();
   const methods = useForm<CreateFieldValues>();
-  const { register, formState, handleSubmit } = methods;
+  const { register, formState, handleSubmit, watch } = methods;
 
   const onSubmit = async (fieldValues: CreateFieldValues) => {
     const name = fieldValues.name;
@@ -35,28 +36,31 @@ const CreateSessionPage = () => {
     router.push("/");
   };
 
+  useEffect(() => {
+    watch("files");
+  }, []);
+
   return (
     <Layout>
-      <Card>
-        <Title>Create session</Title>
-        <Text>
-          <Link href={"/"}>Back to overview</Link>
-        </Text>
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Card>
+            <Title>Create session</Title>
+            <Text>
+              <Link href={"/"}>Back to overview</Link>
+            </Text>
             <TextInput {...register("name")} placeholder="Name" />
             <Text>Map (optional)</Text>
-            <ImageInput
-              {...register("files", {
-                validate: (value) => value.length <= 1,
-              })}
-            />
-            <Button disabled={formState.isSubmitting} type="submit">
+            <ImageInput {...register("files")} />
+            <Button
+              disabled={formState.isSubmitting || !formState.isValid}
+              type="submit"
+            >
               Submit
             </Button>
-          </form>
-        </FormProvider>
-      </Card>
+          </Card>
+        </form>
+      </FormProvider>
     </Layout>
   );
 };
