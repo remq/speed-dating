@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-const ExpandIcon = (props: SVGProps<SVGSVGElement>) => (
+const NextIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
@@ -15,7 +15,7 @@ const ExpandIcon = (props: SVGProps<SVGSVGElement>) => (
     ></g>
     <g id="SVGRepo_iconCarrier">
       <path
-        d="M9.00002 3.99998H4.00004L4 9M20 8.99999V4L15 3.99997M15 20H20L20 15M4 15L4 20L9.00002 20"
+        d="M9 20L17 12L9 4"
         stroke="#000000"
         stroke-width="1.5"
         stroke-linecap="round"
@@ -24,4 +24,5 @@ const ExpandIcon = (props: SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
-export default ExpandIcon;
+
+export default NextIcon;
