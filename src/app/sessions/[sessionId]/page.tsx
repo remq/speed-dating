@@ -42,7 +42,7 @@ const SessionPage = ({
       </Card>
       {listUsersQuery.data?.map((user) => (
         <Card key={user.userId} isHorizontal>
-          <Text>{user.name}</Text>
+          <Text>{`${user.name} (${user.state})`}</Text>
           <Button
             onClick={() => {
               deleteUser(user.userId);
