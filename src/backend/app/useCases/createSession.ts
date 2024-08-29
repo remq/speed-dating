@@ -1,4 +1,4 @@
-import { Session } from "@backend/domain/dtos/session";
+import { Session } from "@backend/domain/entities/session";
 import { IIDGenerator } from "../providers/idGenerator";
 import { IFileRepository } from "../repositories/file";
 import { ISessionRepository } from "../repositories/session";

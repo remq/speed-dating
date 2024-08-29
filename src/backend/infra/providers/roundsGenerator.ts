@@ -1,16 +1,15 @@
 import { IRoundsGenerator } from "@backend/app/providers/roundsGenerator";
-import { MatchDTO } from "@backend/domain/dtos/match";
-import { RoundDTO } from "@backend/domain/dtos/round";
-import { UserLikesMapDTO } from "@backend/domain/dtos/userLikesMap";
+import { Match, Round } from "@backend/domain/entities/session";
+import { UserLikesMap } from "@backend/domain/valueObjects/userLikesMap";
 
 export class RoundsGenerator implements IRoundsGenerator {
   generateNextRound(
-    previousRounds: RoundDTO[],
-    userLikesMap: UserLikesMapDTO
-  ): RoundDTO {
+    previousRounds: Round[],
+    userLikesMap: UserLikesMap
+  ): Round {
     const userIds = Object.keys(userLikesMap);
 
-    const isExclusion = ([a, b]: MatchDTO) =>
+    const isExclusion = ([a, b]: Match) =>
       !userLikesMap[a].includes(b) && !userLikesMap[b].includes(a);
 
     const combinations = userIds
@@ -60,7 +59,7 @@ export class RoundsGenerator implements IRoundsGenerator {
     // );
 
     // Generate round
-    const nextRound: RoundDTO = [];
+    const nextRound: Round = [];
 
     [...userIds]
       .sort((a, b) => exclusionCountMap[b] - exclusionCountMap[a])

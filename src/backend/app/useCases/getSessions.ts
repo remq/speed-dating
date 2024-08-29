@@ -1,4 +1,4 @@
-import { Session } from "@backend/domain/dtos/session";
+import { Session } from "@backend/domain/entities/session";
 import { ISessionRepository } from "../repositories/session";
 
 export interface IGetSessionsUseCase {

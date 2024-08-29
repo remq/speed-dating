@@ -6,7 +6,7 @@
     "dev": "next dev & typed-scss-modules \"src/**/*.module.scss\" --watch --ignoreInitial --nameFormat none --exportType default --additionalData '@import \"src/frontend/styles/imports.scss\";'",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint && tsc --noEmit"
   },
   "dependencies": {
     "@react-spring/web": "^9.7.4",
