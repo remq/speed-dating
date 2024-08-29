@@ -42,18 +42,21 @@ export const SessionProvider: FC<
     enabled: authStatus === "authorised",
   });
 
+  const { refetch: refetchSession } = getSessionQuery;
+  const { refetch: refetchUserSession } = getUserSessionQuery;
+
   const invalidateSession = useCallback(() => {
     const cookies = parseCookieString(document.cookie);
     if (!cookies[sessionId]) {
       setAuthStatus("unauthorised");
-      getSessionQuery.refetch();
+      refetchSession();
       return;
     }
 
     setUserId(cookies[sessionId]);
     setAuthStatus("authorised");
-    getUserSessionQuery.refetch();
-  }, [getSessionQuery, getUserSessionQuery, sessionId]);
+    refetchUserSession();
+  }, [refetchSession, refetchUserSession, sessionId]);
 
   useEffect(invalidateSession, [invalidateSession]);
 
