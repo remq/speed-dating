@@ -1,4 +1,4 @@
-import { UserDTO } from "@backend/domain/dtos/user";
+import { User } from "@backend/domain/entities/user";
 import { useListUsersQuery } from "@frontend/api/endpoints";
 import Card from "@frontend/components/Card/Card";
 import CountDownCard from "@frontend/components/CountDownCard/CountDownCard";
@@ -16,7 +16,7 @@ import styles from "./RoundsStep.module.scss";
 
 const TIME_PER_ROUND = 5 * 60;
 
-const getUserById = (users: UserDTO[], userId: string) =>
+const getUserById = (users: User[], userId: string) =>
   users.find((user) => user.userId === userId)!;
 
 const RoundsStep: FC<{ isPresenting: boolean }> = ({ isPresenting }) => {

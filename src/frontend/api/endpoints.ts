@@ -1,7 +1,7 @@
 "use client";
 
-import { SessionDTO } from "@backend/domain/dtos/session";
-import { UserDTO } from "@backend/domain/dtos/user";
+import { Session } from "@backend/domain/entities/session";
+import { User } from "@backend/domain/entities/user";
 import { handleCreateSession } from "@backend/presentation/controllers/createSession";
 import { handleCreateSessionUser } from "@backend/presentation/controllers/createSessionUser";
 import { handleDeleteSession } from "@backend/presentation/controllers/deleteSession";
@@ -28,7 +28,7 @@ type AppMutationOptions<T = unknown, V = unknown> = UseMutationOptions<
   V
 >;
 
-export const useListSessionsQuery = (options?: AppQueryOptions<SessionDTO[]>) =>
+export const useListSessionsQuery = (options?: AppQueryOptions<Session[]>) =>
   useQuery(
     ["listSessions"],
     () => {
@@ -39,7 +39,7 @@ export const useListSessionsQuery = (options?: AppQueryOptions<SessionDTO[]>) =>
 
 export const useGetSessionQuery = (
   sessionId: string,
-  options?: AppQueryOptions<SessionDTO>
+  options?: AppQueryOptions<Session>
 ) =>
   useQuery(
     ["getSessionQuery", sessionId],
@@ -52,7 +52,7 @@ export const useGetSessionQuery = (
 export const useGetUserSessionQuery = (
   sessionId: string,
   userId: string,
-  options?: AppQueryOptions<{ session: SessionDTO; user: UserDTO }>
+  options?: AppQueryOptions<{ session: Session; user: User }>
 ) =>
   useQuery(
     ["getUserSession", sessionId, userId],
@@ -63,7 +63,7 @@ export const useGetUserSessionQuery = (
   );
 
 export const useCreateSessionMutation = (
-  options?: AppMutationOptions<SessionDTO, FormData>
+  options?: AppMutationOptions<Session, FormData>
 ) =>
   useMutation(
     "createSession",
@@ -133,7 +133,7 @@ export const useNextRoundMutation = (
 
 export const useListUsersQuery = (
   sessionId: string,
-  options?: AppQueryOptions<UserDTO[]>
+  options?: AppQueryOptions<User[]>
 ) =>
   useQuery(
     ["listUsersQuery", sessionId],
@@ -145,7 +145,7 @@ export const useListUsersQuery = (
 
 export const useGetUserQuery = (
   userId: string,
-  options?: AppQueryOptions<UserDTO>
+  options?: AppQueryOptions<User>
 ) =>
   useQuery(
     ["getUserQuery", userId],
@@ -157,7 +157,7 @@ export const useGetUserQuery = (
 
 export const useRegisterMutation = (
   options?: AppMutationOptions<
-    UserDTO,
+    User,
     { sessionId: string; name: string; userImage: Blob }
   >
 ) =>

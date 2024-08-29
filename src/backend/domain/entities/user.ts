@@ -1,6 +1,6 @@
 import { UserState } from "../enums/userState";
 
-export interface UserDTO {
+export interface User {
   userId: string;
   name: string;
   imageUrl: string;

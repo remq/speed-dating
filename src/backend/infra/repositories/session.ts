@@ -1,9 +1,9 @@
 import { ISessionRepository } from "@backend/app/repositories/session";
-import { RoundDTO } from "@backend/domain/dtos/round";
-import { SessionDTO } from "@backend/domain/dtos/session";
-import { UserDTO } from "@backend/domain/dtos/user";
+import { Round, Session } from "@backend/domain/entities/session";
+import { User } from "@backend/domain/entities/user";
 import { SessionState } from "@backend/domain/enums/sessionState";
 import { UserState } from "@backend/domain/enums/userState";
+import { UserLikesMap } from "@backend/domain/valueObjects/userLikesMap";
 import { createClient } from "redis";
 import {
   generateSessionKey,
@@ -14,8 +14,6 @@ import {
   parseSession,
   parseUser,
 } from "../utils/redis";
-
-export type UserLikesMap = Record<string, string[]>;
 
 export class SessionRepository implements ISessionRepository {
   private redisClient = createClient({
@@ -85,7 +83,7 @@ export class SessionRepository implements ISessionRepository {
     ]);
   }
 
-  async getSessionUser(sessionId: string): Promise<UserDTO> {
+  async getSessionUser(sessionId: string): Promise<User> {
     const data = await this.redisClient.hGetAll(generateUserKey(sessionId));
     return parseUser(data);
   }
@@ -96,7 +94,7 @@ export class SessionRepository implements ISessionRepository {
     name: string,
     imageUrl: string,
     state: UserState
-  ): Promise<UserDTO> {
+  ): Promise<User> {
     const userData = {
       userId,
       name,
@@ -110,7 +108,7 @@ export class SessionRepository implements ISessionRepository {
     return parseUser(userData);
   }
 
-  async getSessionUsers(sessionId: string): Promise<UserDTO[]> {
+  async getSessionUsers(sessionId: string): Promise<User[]> {
     const userIds = await this.redisClient.lRange(
       generateSessionUsersKey(sessionId),
       0,
@@ -122,7 +120,7 @@ export class SessionRepository implements ISessionRepository {
     return data.map((userData) => parseUser(userData));
   }
 
-  async createRound(sessionId: string, round: RoundDTO): Promise<void> {
+  async createRound(sessionId: string, round: Round): Promise<void> {
     const session = await this.getSession(sessionId);
     const sessionKey = generateSessionKey(sessionId);
     await this.redisClient.hSet(
@@ -147,7 +145,7 @@ export class SessionRepository implements ISessionRepository {
     ]);
   }
 
-  async getSession(sessionId: string): Promise<SessionDTO> {
+  async getSession(sessionId: string): Promise<Session> {
     const data = await this.redisClient.hGetAll(generateSessionKey(sessionId));
     return parseSession(data);
   }
@@ -156,7 +154,7 @@ export class SessionRepository implements ISessionRepository {
     sessionId: string,
     name: string,
     mapImageUrl?: string
-  ): Promise<SessionDTO> {
+  ): Promise<Session> {
     const sessionData = {
       sessionId,
       name,
@@ -171,7 +169,7 @@ export class SessionRepository implements ISessionRepository {
     return parseSession(sessionData);
   }
 
-  async getSessions(): Promise<SessionDTO[]> {
+  async getSessions(): Promise<Session[]> {
     const sessionIds = await this.redisClient.lRange(
       generateSessionsKey(),
       0,

@@ -1,14 +1,14 @@
-import { SessionDTO } from "@backend/domain/dtos/session";
+import { Session } from "@backend/domain/dtos/session";
 import { ISessionRepository } from "../repositories/session";
 
 export interface IGetSessionsUseCase {
-  execute(): Promise<SessionDTO[]>;
+  execute(): Promise<Session[]>;
 }
 
 export class GetSessionsUseCase implements IGetSessionsUseCase {
   constructor(private sessionRepository: ISessionRepository) {}
 
-  execute(): Promise<SessionDTO[]> {
+  execute(): Promise<Session[]> {
     return this.sessionRepository.getSessions();
   }
 }

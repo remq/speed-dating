@@ -1,10 +1,12 @@
 import { SessionState } from "../enums/sessionState";
-import { RoundDTO } from "./round";
 
-export interface SessionDTO {
+export interface Session {
   name: string;
   state: SessionState;
   sessionId: string;
   mapImageUrl?: string;
-  rounds: RoundDTO[];
+  rounds: Round[];
 }
+
+export type Round = Match[];
+export type Match = [string, string];

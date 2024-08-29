@@ -1,10 +1,10 @@
-import { SessionDTO } from "@backend/domain/dtos/session";
+import { Session } from "@backend/domain/dtos/session";
 import { IIDGenerator } from "../providers/idGenerator";
 import { IFileRepository } from "../repositories/file";
 import { ISessionRepository } from "../repositories/session";
 
 export interface ICreateSessionUseCase {
-  execute(name: string, mapImageFile?: Blob): Promise<SessionDTO>;
+  execute(name: string, mapImageFile?: Blob): Promise<Session>;
 }
 
 export class CreateSessionUseCase implements ICreateSessionUseCase {
@@ -14,7 +14,7 @@ export class CreateSessionUseCase implements ICreateSessionUseCase {
     private idGenerator: IIDGenerator
   ) {}
 
-  async execute(name: string, mapImageFile?: Blob): Promise<SessionDTO> {
+  async execute(name: string, mapImageFile?: Blob): Promise<Session> {
     const sessionId = this.idGenerator.generateID();
 
     let remoteImagePath: string | undefined = undefined;

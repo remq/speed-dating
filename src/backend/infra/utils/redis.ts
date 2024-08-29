@@ -1,5 +1,5 @@
-import { SessionDTO } from "@backend/domain/dtos/session";
-import { UserDTO } from "@backend/domain/dtos/user";
+import { Session } from "@backend/domain/entities/session";
+import { User } from "@backend/domain/entities/user";
 
 const USER_PREFIX = "user";
 const SESSION_USERS_PREFIX = "sessionusers";
@@ -16,7 +16,7 @@ export const generateSessionKey = (sessionId: string) =>
 export const generateUserLikesKey = (userId: string) =>
   `${USER_LIKES_PREFIX}:${userId}`;
 
-export const parseUser = (data: Record<string, any>): UserDTO => {
+export const parseUser = (data: Record<string, any>): User => {
   if (
     !(
       "userId" in data &&
@@ -29,7 +29,7 @@ export const parseUser = (data: Record<string, any>): UserDTO => {
     throw new Error("couldn't parse user");
   }
 
-  const user: UserDTO = {
+  const user: User = {
     userId: data.userId,
     name: data.name,
     imageUrl: data.imageUrl,
@@ -39,7 +39,7 @@ export const parseUser = (data: Record<string, any>): UserDTO => {
   return user;
 };
 
-export const parseSession = (data: Record<string, any>): SessionDTO => {
+export const parseSession = (data: Record<string, any>): Session => {
   if (
     !(
       "sessionId" in data &&
@@ -52,7 +52,7 @@ export const parseSession = (data: Record<string, any>): SessionDTO => {
     throw new Error("couldn't parse session");
   }
 
-  const session: SessionDTO = {
+  const session: Session = {
     sessionId: data.sessionId,
     name: data.name,
     state: data.state,

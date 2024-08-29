@@ -1,5 +1,5 @@
-import { SessionDTO } from "@backend/domain/dtos/session";
-import { UserDTO } from "@backend/domain/dtos/user";
+import { Session } from "@backend/domain/dtos/session";
+import { User } from "@backend/domain/entities/user";
 import {
   useGetSessionQuery,
   useGetUserSessionQuery,
@@ -17,8 +17,8 @@ import {
 } from "react";
 
 export type SessionContextProps = {
-  session?: SessionDTO;
-  user?: UserDTO;
+  session?: Session;
+  user?: User;
   invalidateSession: () => void;
 };
 

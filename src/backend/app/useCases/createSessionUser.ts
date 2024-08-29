@@ -1,11 +1,11 @@
-import { UserDTO } from "@backend/domain/dtos/user";
+import { User } from "@backend/domain/entities/user";
 import { UserState } from "@backend/domain/enums/userState";
 import { IIDGenerator } from "../providers/idGenerator";
 import { IFileRepository } from "../repositories/file";
 import { ISessionRepository } from "../repositories/session";
 
 export interface ICreateSessionUserUseCase {
-  execute(sessionId: string, name: string, userImage: Blob): Promise<UserDTO>;
+  execute(sessionId: string, name: string, userImage: Blob): Promise<User>;
 }
 
 export class CreateSessionUserUseCase implements ICreateSessionUserUseCase {
@@ -19,7 +19,7 @@ export class CreateSessionUserUseCase implements ICreateSessionUserUseCase {
     sessionId: string,
     name: string,
     userImage: Blob
-  ): Promise<UserDTO> {
+  ): Promise<User> {
     const session = await this.sessionRepository.getSession(sessionId);
     const userId = this.idGenerator.generateID();
 
