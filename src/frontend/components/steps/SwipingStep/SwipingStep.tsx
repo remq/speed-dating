@@ -68,7 +68,15 @@ const PlaySwipingStep: FC = () => {
       });
       await invalidateSession();
     })();
-  }, [swipeCount, likedIds, users, submitLikesMutation, invalidateSession]);
+  }, [
+    swipeCount,
+    likedIds,
+    users,
+    submitLikesMutation,
+    invalidateSession,
+    user,
+    session,
+  ]);
 
   if (listUsersQuery.isLoading || submitLikesMutation.isLoading) {
     return <SpinnerLayout />;

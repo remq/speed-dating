@@ -1,4 +1,4 @@
-import { Session } from "@backend/domain/dtos/session";
+import { Session } from "@backend/domain/entities/session";
 import { User } from "@backend/domain/entities/user";
 import {
   useGetSessionQuery,
@@ -53,9 +53,9 @@ export const SessionProvider: FC<
     setUserId(cookies[sessionId]);
     setAuthStatus("authorised");
     getUserSessionQuery.refetch();
-  }, [sessionId]);
+  }, [getSessionQuery, getUserSessionQuery, sessionId]);
 
-  useEffect(invalidateSession, [sessionId]);
+  useEffect(invalidateSession, [invalidateSession]);
 
   switch (authStatus) {
     case "loading":

@@ -38,7 +38,7 @@ const CreateSessionPage = () => {
 
   useEffect(() => {
     watch("files");
-  }, []);
+  }, [watch]);
 
   return (
     <Layout>

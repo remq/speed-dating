@@ -16,15 +16,6 @@ const SessionControls: FC = () => {
 
   const state = session?.state;
 
-  if (!session) {
-    return null;
-  }
-
-  const nextStepDisabled =
-    startSwipingMutation.isLoading ||
-    nextRoundMutation.isLoading ||
-    !["LOBBY", "ROUNDS"].includes(state!);
-
   const toggleFullScreen = useCallback(() => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -33,22 +24,28 @@ const SessionControls: FC = () => {
     }
   }, []);
 
-  const nextStep = async () => {
+  const nextStep = useCallback(async () => {
     switch (state) {
       case "LOBBY":
         await startSwipingMutation.mutateAsync({
-          sessionId: session.sessionId,
+          sessionId: session!.sessionId,
         });
         await invalidateSession();
         break;
       case "ROUNDS":
-        await nextRoundMutation.mutateAsync({ sessionId: session.sessionId });
+        await nextRoundMutation.mutateAsync({ sessionId: session!.sessionId });
         await invalidateSession();
         break;
       default:
         return;
     }
-  };
+  }, [
+    invalidateSession,
+    nextRoundMutation,
+    session,
+    startSwipingMutation,
+    state,
+  ]);
 
   useEffect(() => {
     const eventListener = async (event: KeyboardEvent) => {
@@ -65,6 +62,15 @@ const SessionControls: FC = () => {
       document.removeEventListener("keypress", eventListener);
     };
   }, [nextStep, invalidateSession, state]);
+
+  if (!session) {
+    return null;
+  }
+
+  const nextStepDisabled =
+    startSwipingMutation.isLoading ||
+    nextRoundMutation.isLoading ||
+    !["LOBBY", "ROUNDS"].includes(state!);
 
   return (
     <div className={styles.sessionControls}>

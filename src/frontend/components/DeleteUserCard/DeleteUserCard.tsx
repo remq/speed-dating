@@ -24,7 +24,7 @@ const DeleteUserCard: FC = () => {
   const deleteUser = useCallback(async () => {
     await mutate({ userId: user!.userId, sessionId: session!.sessionId });
     closeModal();
-  }, [user?.userId, mutate, closeModal]);
+  }, [mutate, user, session, closeModal]);
 
   if (!user || !session) {
     return null;
