@@ -10,10 +10,8 @@ import Layout from "@frontend/components/Layout/Layout";
 import { SpinnerCard } from "@frontend/components/Spinner/Spinner";
 import { Text, Title } from "@frontend/components/Text/Text";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 const Home = () => {
-  return notFound();
   const { data, isLoading, refetch } = useListSessionsQuery();
   const deleteSessionMutation = useDeleteSessionMutation();
 
